@@ -16,16 +16,16 @@
 13. Future Improvements
 
 ## Quick Start
-git clone https://github.com/..../..
-cd weather_pipeline
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-bash ./run_weather_pipeline.sh
-Or manual run: PYTHONPATH=/<project-root-dir> python3 scripts/<script-name>.py <batch_id>
+- git clone https://github.com/ji-0x/dev
+- cd weather_pipeline
+- python3 -m venv venv
+- source venv/bin/activate
+- pip install -r requirements.txt
+- bash/zsh ./run_weather_pipeline.sh
+- Or manual run: PYTHONPATH=/<project-root-dir> python3 scripts/<script-name>.py <batch_id>
 
 ## 1. Purpose / Overview
-This pipeline fetches current weather data from WeatherAPI.com, processes raw JSON responses into Parquet format, 
+This pipeline fetches current weather data from [WeatherAPI.com](https://www.weatherapi.com), processes raw JSON responses into Parquet format, 
 performs data quality and validation checks, and loads the cleaned data into a DuckDB database.
 
 ## 2. Architecture / Components
@@ -72,14 +72,14 @@ A config file has been setup in config/settings.json. This is where the API Key,
             ↓                       |
     load_weather.py        ---------|     
 ```
-## 6 Data Output (DB, Files, Reports)
+## 6. Data Output (DB, Files, Reports)
 - Data loaded into DuckDB database in db/weather.duckdb
-- Raw JSON files to data/raw/
-- Structured parquet files to data/processed/
-- Data quality report written to reports/quality/invalid_records_yyyy-mm-dd_hh_mm_ss.csv
+- Raw JSON files written to data/raw/
+- Structured parquet files saved to data/processed/YYYYMMDD_HHMMSS/
+- Data quality report written to reports/quality/invalid_records_yyyy-mm-dd_hh-mm-ss.csv
 
 ## 7. Scheduling
-Scheduled via cron job every 2 hours.
+Scheduled via cron job every 1 hour.
 
 ## 8. Schema & Metadata
 | Schema Name   | Table Name        | Description                                                           |
@@ -109,16 +109,16 @@ Scheduled via cron job every 2 hours.
 
 ## 9. Error Handling & Logging
 All logs written to logs/
-- ingest_weather_yyyy-mm-dd_hh_mm_ss.log
-- process_weather_yyyy-mm-dd_hh_mm_ss.log
-- dq_weather_yyyy-mm-dd_hh_mm_ss.log
-- load_weather_yyyy-mm-dd_hh_mm_ss.log
-- weather_pipeline_batch_run_yyyy-mm-dd_hh_mm_ss.log
-- weather_pipeline_cron_output_yyyy-mm-dd_hh_mm_ss.log
+- ingest_weather_yyyy-mm-dd_hh-mm-ss.log
+- process_weather_yyyy-mm-dd_hh-mm-ss.log
+- dq_weather_yyyy-mm-dd_hh-mm-ss.log
+- load_weather_yyyy-mm-dd-hh-mm-ss.log
+- weather_pipeline_batch_run_yyyy-mm-dd_hh-mm-ss.log
+- weather_pipeline_cron_output_yyyy-mm-dd_hh-mm-ss.log
 - env_from_cron.log
-Other:   
-- Errors are logged with stack traces
-- If API fails, the script logs and skips that city
+- Other:   
+    - Errors are logged with stack traces
+    - If API fails, the script logs and skips that city
 
 ## 10. Testing / Validation
 - Unit tests for individual scripts (pending or under development)
@@ -136,7 +136,7 @@ See requirements.txt file for full list of dependencies.
     
 ## 12. Owners / Maintainers
 - Owner: ji-0x
-- Contact: jamininia.dev@gmail.com
+- Contact:
 
 ## 13. Future Improvements
 - Change scheduler for improved scheduling and monitoring. Reason being, limitations with cron on mac when in sleep mode. Possible options to consider:
@@ -144,23 +144,19 @@ See requirements.txt file for full list of dependencies.
     - Launchd
     - Github actions (using existing cron job)
 - Testing
-    - Develop formal unit tests. Testing was done durring development, however is was unclean and adhoc. The intention here would be to create a testing folder with purpose built functions.
+    - Develop formal unit tests. Testing was done during development, however is was unclean and adhoc. The intention here would be to create a testing folder with purpose built functions.
 - Add more locations
     - Scalability, load and batch partitioning during processing.
-    - Rate limiting
+    - Rate limiting, due to free plan and limited calls.
 - Weather History
 - Forecasts
 - Shell script to clean up logs > x days
-- Build report/s
-    - output pipeline metadata table
-    - output latest weather for cities of interest
-    - output hotest, coldest, wetest, etc
+- Build reports and/or some analysis
 
-## 14. Other (Notes and Comments)
-- This Project was used as a learning exercise. The use of PySpark in this context for the
-initial volume of data (28 cities) is clearly an overkill, unless needing to process weather data for thousands or millions of locations.
+## 14. Notes and Comments
+- This Project was used as a learning exercise to get more familiar with data engineering concepts, tools and techniques. Using PySpark for this project and initial number of locations is clearly overkill, but i still wanted to experiment with it for the sake of hands on experience.
 - Why DuckDB(OLAP) and not SQLite(OLTP)? 
     - easy to use for local dev work and playing around
-    - free, no server needed
-    - Fast with parquet
-    - SQL support, window functions, CTEs, 
+    - free and serverless
+    - Fast performance with parquet
+    - Good SQL support, including window functions and CTEs, 
