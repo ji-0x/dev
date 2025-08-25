@@ -3,22 +3,22 @@
 # ----------------------------------------
 # Environment Capture
 # ----------------------------------------
-env > /Users/jamininia/Workspace/Sandbox/weather_pipeline/logs/env_from_cron.log
+env > /weather_pipeline/logs/env_from_cron.log
 
 # ----------------------------------------
 # Variables / Paths Setup
 # ----------------------------------------
-BASE_DIR="/Users/jamininia/Workspace/Sandbox/weather_pipeline"
+BASE_DIR="/weather_pipeline"
 LOG_DIR="$BASE_DIR/logs"
 VENV_PATH="$BASE_DIR/venv/bin"
 SCRIPT_DIR="$BASE_DIR/scripts"
 
 # ------------- Not in use ---------------
 # Add project root to PYTHONPATH (so weather_pipeline is discoverable)
-# export PYTHONPATH="/Users/jamininia/Workspace/Sandbox"
+# export PYTHONPATH=""
 # ----------------------------------------
 # Isolate PYTHONPATH for this project only
-PROJECT_ROOT="/Users/jamininia/Workspace/Sandbox"
+PROJECT_ROOT="/projects"
 if [[ ":$PYTHONPATH:" != *":$PROJECT_ROOT:"* ]]; then
     export PYTHONPATH="$PROJECT_ROOT:$PYTHONPATH"
 fi
