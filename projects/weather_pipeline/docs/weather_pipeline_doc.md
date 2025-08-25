@@ -14,6 +14,7 @@
 11. Dependencies
 12. Maintainers
 13. Future Improvements
+14. Notes and Comments
 
 ## Quick Start
 - git clone https://github.com/ji-0x/dev
@@ -22,7 +23,7 @@
 - source venv/bin/activate
 - pip install -r requirements.txt
 - bash/zsh ./run_weather_pipeline.sh
-- Or manual run: PYTHONPATH=/<project-root-dir> python3 scripts/<script-name>.py <batch_id>
+- Or manual run: PYTHONPATH=/ <project-root-dir> python3 scripts/ <script-name> .py <batch_id>
 
 ## 1. Purpose / Overview
 This pipeline fetches current weather data from [WeatherAPI.com](https://www.weatherapi.com), processes raw JSON responses into Parquet format, 
