@@ -53,6 +53,33 @@ def fetch_coingecko_data(coin_ids, vs_currency='usd'):
         return None
 
 
+# -----------------------------
+# Save coingecko market data to data/raw/
+# -----------------------------
+
+def save_coingecko_data(data: dict) -> bool:
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"coingecko_market_{timestamp}.json"
+    filepath = os.path.join(RAW_DATA_DIR, filename)
+
+    try:
+        wrapped = {
+            "metadata": {
+                "source": "coingecko",
+                "extracted_at": timestamp,
+                "record_count": len(data),
+            },
+        "data": data
+        }
+
+        with open(filepath, 'w') as f:
+            json.dump(wrapped, f, indent=4) 
+        logger.info(f"Saved raw coingecko data to {filepath}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to save raw coingecko data: {e}")
+        return False
+
 
 def main():
     # Define coins list
