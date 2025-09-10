@@ -20,3 +20,10 @@ os.makedirs(RAW_DATA_DIR,exist_ok=True)
 os.makedirs(LOG_DIR,exist_ok=True)
 
 
+# -----------------------------
+# Logging
+# -----------------------------
+
+logger = setup_logger(__name__, LOG_DIR, 'extract_coingecko')
+logger.info('Logger initialised for extract_coingecko.py')
+
