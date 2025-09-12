@@ -6,8 +6,6 @@ import time
 import requests
 from datetime import datetime
 from financial_pipeline.utils.logging_utils import setup_logger
-from scripts.extract_forex import BASE_DIR, LOG_DIR, RAW_DATA_DIR
-
 
 
 # ---------------------------
