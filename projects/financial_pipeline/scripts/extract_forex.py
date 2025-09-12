@@ -40,4 +40,34 @@ logger.info("Logger initialised for extract_forex.py")
 # Fetch forex rates from Aplha vantage
 # -----------------------------
 
-def 
+def fetch_forex_rates(from_currency, to_currency, config):
+    params = {
+        "function": config["fx_function"],
+        "from_symbol": from_currency,
+        "to_symbol": to_currency,
+        "outputsize": "compact",
+        "api_key": config["api_key"]
+    }
+    
+    try:
+        response = requests.get(config["api_url"], params=params,timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        logger.error(f"Request error for {from_currency}/{to_currency}: {e}")
+    return None
+
+
+
+# -----------------------------
+# Save forex data
+# -----------------------------
+
+
+
+def main():
+    # 
+if __name__ == '__main__':
+    main()
+
+
