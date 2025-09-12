@@ -6,15 +6,15 @@ import requests
 import time 
 from datetime import datetime
 from financial_pipeline.utils.logging_utils import setup_logger
-
+from financial_pipeline.config.credentials import ALPHA_VANTAGE_API_KEY
 
 
 # -----------------------------
-# Setup
+# Setup config
 # -----------------------------
 
 CONFIG = {
-    "api_key": "",
+    "api_key": ALPHA_VANTAGE_API_KEY,
     "fx_function": "FX_DAILY",
     "base_currency": "USD",
     "target_currencies": ["EUR", "GBP", "JPY", "AUD", "NZD", "CAD"],
@@ -30,9 +30,13 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),'..'))
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 RAW_DATA_DIR = os.path.join(BASE_DIR, 'data', 'raw')
 
+os.makedirs(LOG_DIR,exist_ok=True)
+os.makedirs(RAW_DATA_DIR,exist_ok=True)
+
 # -----------------------------
 # Logging
 # -----------------------------
+
 logger  = setup_logger(__name__, LOG_DIR, 'extract_forex')
 logger.info("Logger initialised for extract_forex.py")
 
@@ -102,7 +106,7 @@ def main():
         time.sleep(CONFIG["rate_limit_delay"])
 
     if all_data:
-        success = save_forex_rates(al_data)
+        success = save_forex_rates(all_data)
         if success:
             logger.info(f"Forex extraction job completed. {len(all_data)} currencies fetched.")
     else:
