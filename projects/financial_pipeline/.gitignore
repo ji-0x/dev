@@ -14,3 +14,4 @@ db/
 test/
 analysis/
 __pycahce__/
+**/__pycahce__/
