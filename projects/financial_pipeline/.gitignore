@@ -1,0 +1,16 @@
+# Python environment
+venv/
+
+# Logs and data files
+*.log
+*.json
+*.parquet
+
+# Dat and DB Directories
+data/ 
+db/
+
+# Other
+test/
+analysis/
+__pycahce__/
