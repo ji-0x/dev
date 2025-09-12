@@ -50,7 +50,7 @@ def fetch_forex_rates(from_currency, to_currency, config):
         "from_symbol": from_currency,
         "to_symbol": to_currency,
         "outputsize": "compact",
-        "api_key": config["api_key"]
+        "apikey": config["api_key"]
     }
     
     try:
@@ -98,7 +98,9 @@ def main():
         logger.info(f"Fetching {currency}/{CONFIG['base_currency']}...")
         data = fetch_forex_rates(currency, CONFIG["base_currency"], CONFIG)
 
-        if data and "Time series FX (DAILY)" in data:
+        if data and "Time Series FX (DAILY)" in data:
+
+            # Add check for API errors in response
             all_data[f"{currency}{CONFIG['base_currency']}"] = data
         else:
             logger.warning(f"No data for {currency}/{CONFIG['base_currency']}")
