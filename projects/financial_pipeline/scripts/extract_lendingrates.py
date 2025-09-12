@@ -21,7 +21,8 @@ LOG_DIR = os.path.join(BASE_DIR, 'logs')
 # Setup logging
 # ---------------------------
 
-
+logger = setup_logger(__name__, LOG_DIR, 'extract_lendingrates')
+logger.info("Logger initialised for extract_lendingrates.py")
 
 # ---------------------------
 # Fetch lending rates
