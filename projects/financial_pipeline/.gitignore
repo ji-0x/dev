@@ -15,3 +15,6 @@ test/
 analysis/
 __pycache__/
 **/__pycache__/
+
+# Config (API key)
+config/credentials.py
