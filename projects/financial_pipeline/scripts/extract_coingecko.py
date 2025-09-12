@@ -13,7 +13,7 @@ from financial_pipeline.utils.logging_utils import setup_logger
 # ----------------------------
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-RAW_DATA_DIR = os.path.join(BASE_DIR, 'raw')
+RAW_DATA_DIR = os.path.join(BASE_DIR, 'data', 'raw')
 LOG_DIR = os.path.join(BASE_DIR, 'logs')
 
 os.makedirs(RAW_DATA_DIR,exist_ok=True)
@@ -100,7 +100,7 @@ def main():
             logger.info(f"coingecko extraction job completed. NUmber of coins extraced: {count_coins}")
             return True
         else:
-            logger.wanring("No data fetched.")
+            logger.warning("No data fetched.")
             return False
     except Exception as e:
         logger.error(f"Error during extraction job: {e}", exc_info=True)
