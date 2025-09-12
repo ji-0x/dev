@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 import requests
 from datetime import datetime
 from financial_pipeline.utils.logging_utils import setup_logger
@@ -28,7 +29,17 @@ logger.info("Logger initialised for extract_lendingrates.py")
 # Fetch lending rates
 # ---------------------------
 
+def fetch_lending_rates(endpoint, endpoint_path):
+    url = f"https://ratesapi.nz/api/v1/{endpoint_path}"
 
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        return response.raise_for_status()
+
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch lending rates for {endpoint_path}: {e}")
+    return None
 
 # ---------------------------
 # Save lending rates
