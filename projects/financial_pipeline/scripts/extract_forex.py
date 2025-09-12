@@ -63,7 +63,29 @@ def fetch_forex_rates(from_currency, to_currency, config):
 # Save forex data
 # -----------------------------
 
+def save foroex_rates():
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"forex_rates_{timestamp}.json"
+    filepath = os.path.join(RAW_DATA_DIR, filename)
 
+    wrapped = {
+        "metadta": {
+            "source": "Alpha Vantage - FX_DAILY",
+            "extracted_at": timestamp,
+            "record_count": len(data),
+        },
+        "data": data
+    }
+
+    try:
+        with open(filepath, 'w') as f:
+            json.dump(wrapped, f, indent=4)
+        logger.info(f"Saved raw forex data to {filepath}")
+        return True
+
+    except Exception as e:
+        logger.error(f"Failed to save raw forex data: {e}")
+        return False 
 
 def main():
     # 
