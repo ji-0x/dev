@@ -54,13 +54,13 @@ def fetch_forex_rates(from_currency, to_currency, config):
     }
     
     try:
-        response = requests.get(config["api_url"], params=params,timeout=10)
+        response = requests.get(config["api_url"], params=params, timeout=10)
         response.raise_for_status()
         return response.json()
+
     except requests.RequestException as e:
         logger.error(f"Request error for {from_currency}/{to_currency}: {e}")
     return None
-
 
 
 # -----------------------------
@@ -73,7 +73,7 @@ def save_forex_rates(data):
     filepath = os.path.join(RAW_DATA_DIR, filename)
 
     wrapped = {
-        "metadta": {
+        "metadata": {
             "source": "Alpha Vantage - FX_DAILY",
             "extracted_at": timestamp,
             "record_count": len(data),
@@ -91,6 +91,10 @@ def save_forex_rates(data):
         logger.error(f"Failed to save raw forex data: {e}")
         return False 
 
+# -----------------------------
+# Main execution
+# -----------------------------
+
 def main():
     all_data = {}
 
@@ -99,8 +103,6 @@ def main():
         data = fetch_forex_rates(currency, CONFIG["base_currency"], CONFIG)
 
         if data and "Time Series FX (DAILY)" in data:
-
-            # Add check for API errors in response
             all_data[f"{currency}{CONFIG['base_currency']}"] = data
         else:
             logger.warning(f"No data for {currency}/{CONFIG['base_currency']}")
