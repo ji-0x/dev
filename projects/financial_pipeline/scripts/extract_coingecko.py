@@ -90,10 +90,21 @@ def main():
     ]
 
     try:
+        coingecko_data = fetch_coingecko_data(coins)
+        if coingecko_data:
+            returned_ids = [coin['id'] for coin in coingecko_data]
+            logger.info(f"coins returned by API: {returned_ids}")
 
-
+            count_coins = len(coingecko_data)
+            save_coingecko_data(coingecko_data)
+            logger.info(f"coingecko extraction job completed. NUmber of coins extraced: {count_coins}")
+            return True
+        else:
+            logger.wanring("No data fetched.")
+            return False
     except Exception as e:
-    
+        logger.error(f"Error during extraction job: {e}", exc_info=True)
+        return False 
 
 if __name__ == '__main__':
     main()
