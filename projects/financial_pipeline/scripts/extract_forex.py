@@ -63,7 +63,7 @@ def fetch_forex_rates(from_currency, to_currency, config):
 # Save forex data
 # -----------------------------
 
-def save foroex_rates():
+def save_forex_rates(data):
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = f"forex_rates_{timestamp}.json"
     filepath = os.path.join(RAW_DATA_DIR, filename)
@@ -88,7 +88,27 @@ def save foroex_rates():
         return False 
 
 def main():
-    # 
+    all_data = {}
+
+    for currency in CONFIG["target_currencies"]:
+        logger.info(f"Fetching {currency}/{CONFIG['base_currency']}...")
+        data = fetch_forex_rates(currency, CONFIG["base_currency"], CONFIG)
+
+        if data and "Time series FX (DAILY)" in data:
+            all_data[f"{currency}{CONFIG['base_currency']}"] = data
+        else:
+            logger.warning(f"No data for {currency}/{CONFIG['base_currency']}")
+
+        time.sleep(CONFIG["rate_limit_delay"])
+
+    if all_data:
+        success = save_forex_rates(al_data)
+        if success:
+            logger.info(f"Forex extraction job completed. {len(all_data)} currencies fetched.")
+    else:
+        logger.warning("No forex data fetched.")
+        return False
+
 if __name__ == '__main__':
     main()
 
